@@ -17,6 +17,9 @@ function App() {
   const [stopwatchTime, setStopwatchTime] = useState(0); // in milliseconds
   const [isStopwatchRunning, setIsStopwatchRunning] = useState(false);
 
+  // Toast State
+  const [toast, setToast] = useState<string | null>(null);
+
   function correctTime(time: number, max: number) {
     if (isNaN(time) || time < 0) return 0;
     if (time > max) return max;
@@ -73,10 +76,22 @@ function App() {
     }
   }, [isStopwatchRunning, mode]);
 
+  // Toast Timer Effect
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
   const handleStartTimer = () => {
     stopChime();
     if (hours > 0 || minutes > 0 || seconds > 0) {
       setIsRunning(true);
+    } else {
+      setToast("Time cannot flow from an empty vessel.");
     }
   };
 
@@ -90,6 +105,12 @@ function App() {
 
   return (
     <div className={`zen-container ${containerIsRunning ? 'running' : 'paused'}`}>
+      
+      {/* Zen Logo */}
+      <div className="zen-logo">
+        <span className="zen-logo-circle"></span>
+        <span className="zen-logo-text">ZEN</span>
+      </div>
       
       {/* Zen Tabs Switcher */}
       <div className="zen-tabs">
@@ -113,7 +134,13 @@ function App() {
         </button>
       </div>
 
-      <h1 className="zen-title">{mode === 'timer' ? 'Zen Timer' : 'Zen Stopwatch'}</h1>
+      <h1 className="zen-title">
+        {mode === 'timer' 
+          ? (!isRunning && hours === 0 && minutes === 0 && seconds === 0 
+              ? 'Set a duration to begin' 
+              : 'Zen Timer')
+          : 'Let the flow of time begin'}
+      </h1>
       
       {mode === 'timer' ? (
         /* Timer Layout */
@@ -244,6 +271,13 @@ function App() {
           </>
         )}
       </div>
+
+      {/* Toast Warning */}
+      {toast && (
+        <div className="zen-toast">
+          {toast}
+        </div>
+      )}
     </div>
   )
 }

@@ -125,6 +125,7 @@ body {
   font-family: var(--font-timer);
   font-size: clamp(4rem, 14vw, 11rem);
   line-height: 1;
+  height: 1.15em; /* Unified fixed height to prevent height transitions */
   color: var(--text-color);
   margin-bottom: 4rem;
   user-select: none;
@@ -135,21 +136,28 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 
 /* Let the span size naturally to fit its 2 characters perfectly */
 .timer-display span:not(.stopwatch-ms) {
   font-variant-numeric: tabular-nums;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   text-align: center;
 }
 
 /* The input needs a fixed width slightly wider than 2 characters to show both digits cleanly */
 .timer-input {
   font-variant-numeric: tabular-nums;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   width: 2.2ch; 
+  height: 100%;
   font-family: var(--font-timer);
   font-size: inherit;
   color: inherit;
@@ -158,6 +166,7 @@ body {
   outline: none;
   padding: 0;
   margin: 0;
+  line-height: 1;
   -moz-appearance: textfield;
 }
 
@@ -265,6 +274,85 @@ body {
   background-color: var(--text-color);
 }
 
+/* Zen Logo positioning & styling */
+.zen-logo {
+  position: absolute;
+  top: 2rem;
+  right: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.35em;
+  color: var(--text-color);
+  opacity: 0.6;
+  z-index: 10;
+  transition: opacity 0.5s ease;
+  user-select: none;
+}
+
+.zen-container.running .zen-logo {
+  opacity: 0.1;
+}
+
+.zen-logo-circle {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--text-color);
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+
+.zen-logo-circle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 4px;
+  height: 4px;
+  background-color: var(--text-color);
+  border-radius: 50%;
+}
+
+
+/* Zen Cryptic Toast Warning */
+.zen-toast {
+  position: fixed;
+  bottom: 3rem;
+  background: rgba(78, 62, 56, 0.95); /* matching deep warm brown --text-color */
+  color: var(--bg-color); /* matching pale beige */
+  padding: 0.8rem 1.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  letter-spacing: 0.1em;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  animation: fadeInUpToast 0.4s cubic-bezier(0.16, 1, 0.3, 1), fadeOutToast 0.4s 2.6s forwards;
+  z-index: 100;
+  text-align: center;
+  max-width: 90vw;
+}
+
+@keyframes fadeInUpToast {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutToast {
+  to {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}
+
 /* Media Queries for Mobile Responsiveness */
 @media (max-width: 768px) {
   .timer-display {
@@ -310,6 +398,12 @@ body {
     letter-spacing: 0.15em;
     padding: 0.6rem 1.2rem;
   }
+  .zen-logo {
+    top: 1.2rem;
+    right: 1.5rem;
+    font-size: 0.7rem;
+  }
+
 }
 
 /* Landscape Mode support for phones to prevent vertical overflow */
