@@ -1,0 +1,266 @@
+@font-face {
+  font-family: 'Asvata Demo';
+  src: url('../fonts/asvata-demo/Asvata Demo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --bg-color: #FAF6EE;      /* Pale beige */
+  --text-color: #4E3E38;    /* Deep warm brown */
+  --accent-color: #8C6A5C;  /* Muted earthy brown */
+  --accent-light: #D9C3B0;  /* Very light brown/sand */
+  --font-timer: 'Asvata Demo', monospace;
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  border: none;
+  min-height: auto;
+  display: block;
+}
+
+.zen-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 2rem;
+  position: relative;
+}
+
+.zen-tabs {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  z-index: 10;
+  transition: opacity 0.5s ease;
+}
+
+.zen-container.running .zen-tabs {
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.zen-tab {
+  background: transparent;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-color);
+  opacity: 0.4;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.zen-tab:hover {
+  opacity: 0.7;
+}
+
+.zen-tab.active {
+  opacity: 1;
+  font-weight: 600;
+}
+
+.zen-tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--text-color);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.zen-tab.active::after {
+  width: 40%;
+}
+
+.zen-title {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--accent-color);
+  opacity: 0.6;
+  margin-bottom: 2rem;
+  font-weight: 400;
+  transition: opacity 0.5s ease;
+}
+
+.zen-container.running .zen-title {
+  opacity: 0.2;
+}
+
+.timer-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-timer);
+  font-size: clamp(4rem, 14vw, 11rem);
+  line-height: 1;
+  color: var(--text-color);
+  margin-bottom: 4rem;
+  user-select: none;
+  transition: transform 0.5s ease;
+}
+
+.timer-unit-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Let the span size naturally to fit its 2 characters perfectly */
+.timer-display span:not(.stopwatch-ms) {
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+  text-align: center;
+}
+
+/* The input needs a fixed width slightly wider than 2 characters to show both digits cleanly */
+.timer-input {
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+  text-align: center;
+  width: 2.2ch; 
+  font-family: var(--font-timer);
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  -moz-appearance: textfield;
+}
+
+.timer-input::-webkit-outer-spin-button,
+.timer-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.timer-colon {
+  margin: 0 0.05ch; /* reduced margins to bring units closer together */
+  opacity: 0.8;
+  animation: pulse 2s infinite;
+  display: inline-block;
+  text-align: center;
+  width: 0.5ch;
+}
+
+.timer-colon.paused {
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.9; }
+}
+
+/* Stopwatch Centiseconds Layout */
+.stopwatch-seconds-wrapper {
+  display: inline-flex;
+  align-items: flex-end;
+  position: relative;
+}
+
+.stopwatch-ms {
+  font-size: 0.32em;
+  opacity: 0.65;
+  margin-left: 0.15ch;
+  margin-bottom: 0.1em; /* Aligns with bottom of big digits */
+  font-family: var(--font-timer);
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+  width: 2ch;
+  text-align: left;
+}
+
+.controls {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  transition: opacity 0.5s ease;
+}
+
+.zen-container.running .controls {
+  opacity: 0.25;
+}
+
+.zen-container.running .controls:hover {
+  opacity: 0.85;
+}
+
+.zen-button {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.8rem 1.6rem;
+  position: relative;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.zen-button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background-color: var(--accent-color);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.zen-button:hover {
+  color: var(--accent-color);
+}
+
+.zen-button:hover::after {
+  width: 60%;
+}
+
+.zen-button.primary {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.zen-button.primary::after {
+  background-color: var(--text-color);
+}
