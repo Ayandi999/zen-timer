@@ -124,9 +124,12 @@ function App() {
             ) : (
               <input 
                 type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 className="timer-input"
                 value={format(hours)}
                 onChange={(e) => setHours(correctTime(parseInt(e.target.value), 99))}
+                onFocus={(e) => e.target.select()}
                 min="0"
                 max="99"
               />
@@ -141,9 +144,12 @@ function App() {
             ) : (
               <input 
                 type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 className="timer-input"
                 value={format(minutes)}
                 onChange={(e) => setMinutes(correctTime(parseInt(e.target.value), 59))}
+                onFocus={(e) => e.target.select()}
                 min="0"
                 max="59"
               />
@@ -158,9 +164,12 @@ function App() {
             ) : (
               <input 
                 type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 className="timer-input"
                 value={format(seconds)}
                 onChange={(e) => setSeconds(correctTime(parseInt(e.target.value), 59))}
+                onFocus={(e) => e.target.select()}
                 min="0"
                 max="59"
               />

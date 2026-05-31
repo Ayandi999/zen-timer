@@ -45,7 +45,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100dvh;
   padding: 2rem;
   position: relative;
 }
@@ -263,4 +263,69 @@ body {
 
 .zen-button.primary::after {
   background-color: var(--text-color);
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .timer-display {
+    font-size: clamp(3rem, 14vw, 7rem);
+    margin-bottom: 3rem;
+  }
+  .controls {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .zen-container {
+    padding: 1.5rem;
+  }
+  .zen-tabs {
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .zen-tab {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    padding: 0.4rem 0.8rem;
+  }
+  .zen-title {
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    margin-bottom: 1.5rem;
+  }
+  .timer-display {
+    font-size: clamp(2.2rem, 11vw, 4.5rem);
+    margin-bottom: 2.5rem;
+  }
+  .stopwatch-ms {
+    font-size: 0.35em;
+    margin-left: 0.1ch;
+  }
+  .controls {
+    gap: 1rem;
+  }
+  .zen-button {
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+/* Landscape Mode support for phones to prevent vertical overflow */
+@media (max-height: 480px) {
+  .zen-container {
+    height: auto;
+    min-height: 100dvh;
+    padding: 1rem;
+  }
+  .zen-tabs {
+    margin-bottom: 1rem;
+  }
+  .zen-title {
+    margin-bottom: 1rem;
+  }
+  .timer-display {
+    margin-bottom: 1.5rem;
+  }
 }
